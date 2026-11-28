@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
-import 'package:nema/pages/create_account_page.dart';
+import 'package:nema/pages/auth/create_account_page.dart';
 import 'package:nema/pages/home_page.dart';
-import 'package:nema/pages/sign_in_page.dart';
+import 'package:nema/pages/auth/sign_in_page.dart';
 
 final GoRouter router = GoRouter(
   initialLocation: '/sign-in',

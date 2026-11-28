@@ -4,6 +4,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:nema/widgets/auth/auth_submit_button.dart';
 import 'package:nema/widgets/auth/auth_text_field.dart';
 import 'package:nema/widgets/auth/o_auth_button.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignInPage extends StatefulWidget {
   const new({super.key});
@@ -16,6 +17,9 @@ class _SignInPageState extends State<SignInPage> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   bool loading = false;
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -76,11 +80,13 @@ class _SignInPageState extends State<SignInPage> {
                 ],
               ),
               Form(
+                key: formKey,
                 child: Column(
                   spacing: 8,
                   children: [
                     AuthTextField(
                       labelText: "email",
+                      controller: emailController,
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -97,6 +103,7 @@ class _SignInPageState extends State<SignInPage> {
                     AuthTextField(
                       labelText: "password",
                       password: true,
+                      controller: passwordController,
                       keyboardType: TextInputType.visiblePassword,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -111,6 +118,29 @@ class _SignInPageState extends State<SignInPage> {
                       onPressed: () async {
                         if (!formKey.currentState!.validate()) {
                           return;
+                        }
+
+                        SupabaseClient supabase = Supabase.instance.client;
+
+                        try {
+                          setState(() {
+                            loading = true;
+                          });
+
+                          await supabase.auth.signInWithPassword(
+                            email: emailController.text,
+                            password: passwordController.text,
+                          );
+
+                          if (context.mounted) {
+                            context.go('/');
+                          }
+                        } catch (e) {
+                          debugPrint(e.toString());
+                        } finally {
+                          setState(() {
+                            loading = false;
+                          });
                         }
                       },
                       loading: loading,
