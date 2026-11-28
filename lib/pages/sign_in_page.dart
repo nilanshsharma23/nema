@@ -1,11 +1,21 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:nema/widgets/auth/auth_submit_button.dart';
 import 'package:nema/widgets/auth/auth_text_field.dart';
 import 'package:nema/widgets/auth/o_auth_button.dart';
 
-class SignInPage extends StatelessWidget {
+class SignInPage extends StatefulWidget {
   const new({super.key});
+
+  @override
+  State<SignInPage> createState() => _SignInPageState();
+}
+
+class _SignInPageState extends State<SignInPage> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -72,13 +82,39 @@ class SignInPage extends StatelessWidget {
                     AuthTextField(
                       labelText: "email",
                       keyboardType: TextInputType.emailAddress,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Email can't be empty";
+                        }
+
+                        if (!EmailValidator.validate(value)) {
+                          return "Invalid Email.";
+                        }
+
+                        return null;
+                      },
                     ),
                     AuthTextField(
                       labelText: "password",
                       password: true,
                       keyboardType: TextInputType.visiblePassword,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Password can't be empty";
+                        }
+
+                        return null;
+                      },
                     ),
-                    AuthSubmitButton(text: "sign in", onPressed: () {}),
+                    AuthSubmitButton(
+                      text: "sign in",
+                      onPressed: () async {
+                        if (!formKey.currentState!.validate()) {
+                          return;
+                        }
+                      },
+                      loading: loading,
+                    ),
                   ],
                 ),
               ),

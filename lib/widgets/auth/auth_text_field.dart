@@ -9,6 +9,7 @@ class AuthTextField extends StatefulWidget {
     this.keyboardType,
     this.password = false,
     this.suffixIcon,
+    this.validator,
   });
 
   final String? labelText;
@@ -16,6 +17,7 @@ class AuthTextField extends StatefulWidget {
   final TextInputType? keyboardType;
   final Widget? suffixIcon;
   final bool password;
+  final String? Function(String? value)? validator;
 
   @override
   State<AuthTextField> createState() => _AuthTextFieldState();
@@ -28,8 +30,11 @@ class _AuthTextFieldState extends State<AuthTextField> {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.controller,
-      keyboardType: widget.keyboardType,
+      keyboardType: widget.password
+          ? TextInputType.visiblePassword
+          : widget.keyboardType,
       obscureText: showPassword ? false : widget.password,
+      validator: widget.validator,
       decoration: InputDecoration(
         label: widget.labelText != null ? Text(widget.labelText!) : null,
         suffixIcon: Padding(
