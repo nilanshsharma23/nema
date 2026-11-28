@@ -10,6 +10,7 @@ class LightModeColors {
   static const accentColor = Color(0xFFB9B3CC);
   static const accentFgColor = Color(0xFF3B3430);
   static const cardColor = Color(0xFFFBF8F3);
+  static const secondaryTextColor = Color(0xFF7A6F66);
 
   static const colorScheme = ColorScheme(
     brightness: Brightness.light,
@@ -25,6 +26,7 @@ class LightModeColors {
         ? Color(0xffB3261E)
         : Color(0xffF2B8B5),
     surfaceContainer: cardColor,
+    onSurfaceVariant: secondaryTextColor,
     onError: Brightness.light == Brightness.light
         ? Color(0xffFFFFFF)
         : Color(0xff601410),
@@ -41,6 +43,7 @@ class DarkModeColors {
   static const accentColor = Color(0xFF9C96B5);
   static const accentFgColor = Color(0xFF1E1A18);
   static const cardColor = Color(0xFF282320);
+  static const secondaryTextColor = Color(0xFFA39A8F);
 
   static const colorScheme = ColorScheme(
     brightness: Brightness.dark,
@@ -51,6 +54,7 @@ class DarkModeColors {
     tertiary: accentColor,
     onTertiary: accentFgColor,
     surface: backgroundColor,
+    onSurfaceVariant: secondaryTextColor,
     onSurface: textColor,
     error: Brightness.dark == Brightness.light
         ? Color(0xffB3261E)
